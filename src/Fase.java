@@ -28,15 +28,18 @@ public class Fase extends JPanel implements ActionListener {
     private Timer timer;
     private Clip clip;
 
+    // Construtor Fase
     public Fase() {
 
         requestFocus();
         setFocusable(true);
         setDoubleBuffered(true);
 
+        //Imagem de fundo preta
         ImageIcon referencia1 = new ImageIcon("res\\Background.jpg");
         fundo1 = referencia1.getImage();
 
+        //Upando a musica de batalha e definindo o valor fixo de volume
         try {
             File file = new File("res\\xDeviruchi - Prepare for Battle! .wav");
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(file);
@@ -50,6 +53,7 @@ public class Fase extends JPanel implements ActionListener {
         } catch (IOException | LineUnavailableException | UnsupportedAudioFileException e) {
         }
 
+        //criando o player e o timer pra fazer rodar
         player = new Player();
         player.load();
 
@@ -59,6 +63,7 @@ public class Fase extends JPanel implements ActionListener {
         timer.start();
     }
 
+    // Paint component é importante pra mostrar oq ta rolando e acontecendo na fase
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -75,6 +80,7 @@ public class Fase extends JPanel implements ActionListener {
         g.dispose();
     }
 
+    // O Action permormed que atualiza oq esta acontecendo na fase
     @Override
     public void actionPerformed(ActionEvent e) {
         player.update();
@@ -92,6 +98,8 @@ public class Fase extends JPanel implements ActionListener {
         repaint();
     }
 
+
+    // Declarando o Teclado adapter pra minha fase entender quando eu precionar as teclas
     private class TecladoAdapter extends KeyAdapter {
 
         @Override
@@ -107,6 +115,7 @@ public class Fase extends JPanel implements ActionListener {
         }
     }
 
+    // getters e setters
     public Player getPlayer() {
         return player;
     }

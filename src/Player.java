@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
+// classe Player 
 public class Player {
 
     private int x, y;
@@ -15,6 +16,7 @@ public class Player {
     private int altura, largura;
     private List <Tiro> tiros;
 
+    // contrutor player e declaração que ele pode criar uma lista com a classe tiros
     public Player() {
         this.x = 100;
         this.y = 100;
@@ -22,6 +24,7 @@ public class Player {
         tiros = new ArrayList<Tiro>();
     }
 
+    // carregando minha imagem do jogador
     public void load() {
         ImageIcon referencia = new ImageIcon("res\\spaceship2.png");
         imagem = referencia.getImage();
@@ -29,16 +32,19 @@ public class Player {
         largura = imagem.getWidth(null);
     }
 
+    // chamo este update na fase pra definir a movimentação do jogador
     public void update() {
         x += dx;
         y += dy;
     }
 
+    // Criando metodo tiro simples pra ser chamado no teclado e criar um Tiro na Fase que começa do jogador
     public void tiroSimples(){
         this.tiros.add(new Tiro(x+largura, y + (altura /2)));
 
     }
 
+    // Metodo para ler as entradas do teclado no programa
     public void keyPressed(KeyEvent tecla) {
         int codigo = tecla.getKeyCode();
 
@@ -60,6 +66,7 @@ public class Player {
         }
     }
 
+    // metodo pra atualizar e parar de andar com a nave no programa
     public void keyReleased(KeyEvent tecla) {
         int codigo = tecla.getKeyCode();
 
@@ -77,6 +84,7 @@ public class Player {
         }
     }
 
+    // Getters e Setters da classe Player
     public int getX() {
         return x;
     }
