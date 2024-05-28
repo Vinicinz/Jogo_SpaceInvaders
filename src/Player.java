@@ -26,7 +26,7 @@ public class Player {
 
     // carregando minha imagem do jogador
     public void load() {
-        ImageIcon referencia = new ImageIcon("res\\spaceship2.png");
+        ImageIcon referencia = new ImageIcon("res\\Player\\spaceship2.png");
         imagem = referencia.getImage();
         altura = imagem.getHeight(null);
         largura = imagem.getWidth(null);
@@ -40,7 +40,7 @@ public class Player {
 
     // Criando metodo tiro simples pra ser chamado no teclado e criar um Tiro na Fase que começa do jogador
     public void tiroSimples(){
-        this.tiros.add(new Tiro(x+largura, y + (altura /2)));
+        this.tiros.add(new Tiro(x+largura, y + (altura /2) - 10));
 
     }
 

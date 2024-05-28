@@ -2,19 +2,46 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.IOException;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 
 public class TelaInicial extends JPanel implements ActionListener{
+
+        private Clip clip;
+        private Image imagem1; 
+
 
     // metodo principal TelaInical qu eé chamado no Container 
     public TelaInicial() {
 
         setLayout(null);
+        ImageIcon referencia = new ImageIcon("res\\Painel\\FundoInicial.gif");
+        imagem1 = referencia.getImage();
+
+        //Upando a musica de batalha e definindo o valor fixo de volume
+        try {
+            File file = new File("res\\Musicas\\TitleTheme .wav");
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(file);
+            clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+
+            FloatControl voluControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            voluControl.setValue(-20.0f);
+
+        } catch (IOException | LineUnavailableException | UnsupportedAudioFileException e) {
+        }
 
         // Criação do Botão Start e Estilização
         JButton startButton = new JButton("Start");
+
         startButton.setForeground(Color.BLACK);
         startButton.setBackground(Color.decode("#ffffff"));
         startButton.setFont(new Font("Infinix Display", Font.PLAIN, 35));
@@ -25,6 +52,7 @@ public class TelaInicial extends JPanel implements ActionListener{
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                clip.stop();
                 Fase fase = new Fase();
                 Container container = (Container) SwingUtilities.getWindowAncestor(TelaInicial.this);
                 container.setContentPane(fase);
@@ -55,6 +83,10 @@ public class TelaInicial extends JPanel implements ActionListener{
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        Graphics2D graficos = (Graphics2D) g;
+        graficos.drawImage(imagem1, 0, 0, this);
+
+        
 
         JButton startButton = (JButton) getComponent(0);
         int x = (getWidth() - startButton.getWidth()) / 2;
