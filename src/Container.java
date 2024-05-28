@@ -9,6 +9,7 @@ public class Container extends JFrame {
         setSize(1024, 760);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+        this.setResizable(false);
         setVisible(true);
     }
 

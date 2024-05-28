@@ -25,7 +25,6 @@ public class Fase extends JPanel implements ActionListener {
 
     private Image fundo1;
     private Image fundo2;
-    private Image fundo3;
     private Player player;
     private Timer timer;
     private Clip clip;
@@ -41,7 +40,7 @@ public class Fase extends JPanel implements ActionListener {
         //Imagem de fundo preta
         ImageIcon referencia1 = new ImageIcon("res\\Painel\\Background.jpg");
         fundo1 = referencia1.getImage();
-
+    
         //Upando a musica de batalha e definindo o valor fixo de volume
         try {
             File file = new File("res\\Musicas\\PrepareForBattle.wav");
@@ -87,6 +86,7 @@ public class Fase extends JPanel implements ActionListener {
         Graphics2D graficos = (Graphics2D) g;
         // definindo um fundo estatico
         graficos.drawImage(fundo1, 0, 0, null);
+        
         // definindo que o player recebe posições de acordo com as mudanças na classe player
         graficos.drawImage(player.getImagem(), player.getX(), player.getY(), this);
 
