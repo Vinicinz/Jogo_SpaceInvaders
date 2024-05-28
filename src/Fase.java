@@ -39,12 +39,12 @@ public class Fase extends JPanel implements ActionListener {
         setDoubleBuffered(true);
 
         //Imagem de fundo preta
-        ImageIcon referencia1 = new ImageIcon("res\\Background.jpg");
+        ImageIcon referencia1 = new ImageIcon("res\\Painel\\Background.jpg");
         fundo1 = referencia1.getImage();
 
         //Upando a musica de batalha e definindo o valor fixo de volume
         try {
-            File file = new File("res\\xDeviruchi - Prepare for Battle! .wav");
+            File file = new File("res\\Musicas\\PrepareForBattle.wav");
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(file);
             clip = AudioSystem.getClip();
             clip.open(audioInputStream);

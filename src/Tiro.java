@@ -22,7 +22,7 @@ public class Tiro {
 
     //Carregando a imagem do Tiro
     public void load(){
-    ImageIcon referencia = new ImageIcon("res\\TiroSimples.gif");
+    ImageIcon referencia = new ImageIcon("res\\Tiros\\TiroSimples.gif");
     imagem = referencia.getImage();
 
     this.largura = imagem.getWidth(null);

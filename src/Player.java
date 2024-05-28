@@ -26,7 +26,7 @@ public class Player {
 
     // carregando minha imagem do jogador
     public void load() {
-        ImageIcon referencia = new ImageIcon("res\\spaceship2.png");
+        ImageIcon referencia = new ImageIcon("res\\Player\\spaceship2.png");
         imagem = referencia.getImage();
         altura = imagem.getHeight(null);
         largura = imagem.getWidth(null);
