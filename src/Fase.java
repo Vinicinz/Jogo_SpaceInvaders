@@ -155,6 +155,7 @@ public class Fase extends JPanel implements ActionListener {
             if (formaNave.intersects(formaEnemy1)) {
                 player.setVisivel(false);
                 tempEnemy1.setVisivel(false);
+                emJogo = false;
             }
         }
 
