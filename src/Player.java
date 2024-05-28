@@ -1,5 +1,6 @@
 
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -15,11 +16,14 @@ public class Player {
     private Image imagem;
     private int altura, largura;
     private List <Tiro> tiros;
+    private boolean isVisivel;
+
 
     // contrutor player e declaração que ele pode criar uma lista com a classe tiros
     public Player() {
         this.x = 100;
         this.y = 100;
+        isVisivel = true;
 
         tiros = new ArrayList<Tiro>();
     }
@@ -42,6 +46,10 @@ public class Player {
     public void tiroSimples(){
         this.tiros.add(new Tiro(x+largura, y + (altura /2) - 10));
 
+    }
+    
+    public Rectangle getBounds(){
+        return new Rectangle(x,y,largura,altura);
     }
 
     // Metodo para ler as entradas do teclado no programa
@@ -85,6 +93,7 @@ public class Player {
     }
 
     // Getters e Setters da classe Player
+    
     public int getX() {
         return x;
     }
@@ -107,6 +116,14 @@ public class Player {
 
     public List<Tiro> getTiros() {
         return tiros;
+    }
+
+    public boolean isVisivel() {
+        return isVisivel;
+    }
+
+    public void setVisivel(boolean isVisivel) {
+        this.isVisivel = isVisivel;
     }
     
 }

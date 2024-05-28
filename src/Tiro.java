@@ -1,5 +1,6 @@
 
 import java.awt.Image;
+import java.awt.Rectangle;
 import javax.swing.ImageIcon;
 
 // Classe Tiro que eu chamo no player toda vez que um botão é apertado e cria uma lista com essa classe na fase
@@ -7,7 +8,7 @@ public class Tiro {
 
     private Image imagem;
     private int x, y;
-    private int largura, altura;
+    private int largura,altura;
     private boolean isVisivel;
     private static final int LARGURA = 938;
     private static int VELOCIDADE = 5;
@@ -35,6 +36,10 @@ public class Tiro {
         if (this.x > LARGURA){
             isVisivel = false;
         }
+    }
+
+    public Rectangle getBounds(){
+        return new Rectangle(x,y,largura,altura);
     }
 
     // getters e Setters da classe 

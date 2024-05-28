@@ -1,5 +1,6 @@
 
 import java.awt.Image;
+import java.awt.Rectangle;
 import javax.swing.ImageIcon;
 
 // Classe Inimigo que eu chamo na fase
@@ -10,7 +11,7 @@ public class Enemy1 {
     private int largura, altura;
     private boolean isVisivel;
     private static final int LARGURA = 0;
-    private static int VELOCIDADE = -4;
+    private static int VELOCIDADE = -2;
 
 
     // Construtor do inimigo1 que recebe as cordenadas
@@ -35,6 +36,10 @@ public class Enemy1 {
         if (this.x < LARGURA){
             isVisivel = false;
         }
+    }
+    
+    public Rectangle getBounds(){
+        return new Rectangle(x,y,largura,altura);
     }
 
     // getters e Setters da classe 

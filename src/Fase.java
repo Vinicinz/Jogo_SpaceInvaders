@@ -2,15 +2,16 @@
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -24,11 +25,11 @@ import javax.swing.Timer;
 public class Fase extends JPanel implements ActionListener {
 
     private Image fundo1;
-    private Image fundo2;
     private Player player;
     private Timer timer;
     private Clip clip;
-    private List <Enemy1> enemy1; 
+    private List<Enemy1> enemy1;
+    private boolean emJogo;
 
     // Construtor Fase
     public Fase() {
@@ -40,7 +41,7 @@ public class Fase extends JPanel implements ActionListener {
         //Imagem de fundo preta
         ImageIcon referencia1 = new ImageIcon("res\\Painel\\Background.jpg");
         fundo1 = referencia1.getImage();
-    
+
         //Upando a musica de batalha e definindo o valor fixo de volume
         try {
             File file = new File("res\\Musicas\\PrepareForBattle.wav");
@@ -62,20 +63,21 @@ public class Fase extends JPanel implements ActionListener {
         inicializaInimigo();
 
         addKeyListener(new TecladoAdapter());
+        emJogo = true;
 
         timer = new Timer(5, this);
         timer.start();
     }
 
     // metodo que define previamente a posição de todos os inimigos no inicio da fase, ela cria uma lista de 40 inimigos e posiciona eles fora da fase
-    public void inicializaInimigo(){
-        int cordenadas[] = new int [40];
+    public void inicializaInimigo() {
+        int cordenadas[] = new int[40];
         enemy1 = new ArrayList<Enemy1>();
 
         for (int i = 0; i < cordenadas.length; i++) {
-            int x = (int)(Math.random()* 8000 + 1024);
-            int y = (int)(Math.random()* 650 + 30);
-            enemy1.add(new Enemy1(x, y));            
+            int x = (int) (Math.random() * 8000 + 1024);
+            int y = (int) (Math.random() * 650 + 30);
+            enemy1.add(new Enemy1(x, y));
         }
     }
 
@@ -84,26 +86,32 @@ public class Fase extends JPanel implements ActionListener {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D graficos = (Graphics2D) g;
-        // definindo um fundo estatico
-        graficos.drawImage(fundo1, 0, 0, null);
-        
-        // definindo que o player recebe posições de acordo com as mudanças na classe player
-        graficos.drawImage(player.getImagem(), player.getX(), player.getY(), this);
+        if (emJogo == true) {
+            // definindo um fundo estatico
+            graficos.drawImage(fundo1, 0, 0, null);
 
-        // laço para atualiza a movimentação do inimigo
-        for (int j = 0; j < enemy1.size(); j++) {
-            Enemy1 in = enemy1.get(j);
-            in.load();
-            graficos.drawImage(in.getImagem(), in.getX() , in.getY(), this);
+            // definindo que o player recebe posições de acordo com as mudanças na classe player
+            graficos.drawImage(player.getImagem(), player.getX(), player.getY(), this);
+
+            // laço para atualiza a movimentação do inimigo
+            for (int j = 0; j < enemy1.size(); j++) {
+                Enemy1 in = enemy1.get(j);
+                in.load();
+                graficos.drawImage(in.getImagem(), in.getX(), in.getY(), this);
+            }
+
+            //laço para atualizar a movimentação do tiro
+            List<Tiro> tiros = player.getTiros();
+            for (int i = 0; i < tiros.size(); i++) {
+                Tiro m = tiros.get(i);
+                m.load();
+                graficos.drawImage(m.getImagem(), m.getX(), m.getY(), this);
+            }
+        } else {
+            ImageIcon fimJogo = new ImageIcon("res\\Painel\\fimdejogo.png");
+            graficos.drawImage(fimJogo.getImage(), 0, 0, null);
         }
 
-        //laço para atualizar a movimentação do tiro
-        List<Tiro> tiros = player.getTiros();
-        for (int i = 0; i < tiros.size(); i++) {
-            Tiro m = tiros.get(i);
-            m.load();
-            graficos.drawImage(m.getImagem(), m.getX(), m.getY(), this);
-        }
         g.dispose();
     }
 
@@ -131,7 +139,43 @@ public class Fase extends JPanel implements ActionListener {
             }
         }
 
+        checarColisoes();
         repaint();
+    }
+
+    public void checarColisoes() {
+        Rectangle formaNave = player.getBounds();
+        Rectangle formaEnemy1;
+        Rectangle formaTiro;
+
+        for (int i = 0; i < enemy1.size(); i++) {
+            Enemy1 tempEnemy1 = enemy1.get(i);
+            formaEnemy1 = tempEnemy1.getBounds();
+
+            if (formaNave.intersects(formaEnemy1)) {
+                player.setVisivel(false);
+                tempEnemy1.setVisivel(false);
+            }
+        }
+
+        List<Tiro> tiros = player.getTiros();
+        for (int j = 0; j < tiros.size(); j++) {
+            Tiro tempTiro = tiros.get(j);
+            formaTiro = tempTiro.getBounds();
+
+            for (int o = 0 ; o < enemy1.size(); o++) {
+                Enemy1 tempEnemy1 = enemy1.get(o);
+                formaEnemy1 = tempEnemy1.getBounds();
+
+                if (formaTiro.intersects(formaEnemy1)){
+                    tempEnemy1.setVisivel(false);
+                    tempTiro.setVisivel(false);
+
+                }
+
+            }
+
+        }
     }
 
     // Declarando o Teclado adapter pra minha fase entender quando eu precionar as teclas
