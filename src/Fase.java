@@ -24,6 +24,7 @@ public class Fase extends JPanel implements ActionListener {
     private boolean emJogo;
     private TelaInicial telaInicial;
     private EfeitosSonoros musica;
+    private EfeitosSonoros efeito;
 
 
     // Construtor Fase
@@ -41,6 +42,7 @@ public class Fase extends JPanel implements ActionListener {
 
         //Upando a musica de batalha
         musica = new EfeitosSonoros();
+        efeito = new EfeitosSonoros();
         MusicaFase();
 
         //criando o player
@@ -153,7 +155,7 @@ public class Fase extends JPanel implements ActionListener {
                 if (formaTiro.intersects(formaEnemy1)){
                     tempEnemy1.setVisivel(false);
                     tempTiro.setVisivel(false);
-
+                    MusicaExplosao();
                 }
 
             }
@@ -171,6 +173,9 @@ public class Fase extends JPanel implements ActionListener {
 	}
     public void PararMusica(){
         musica.Parar();
+    }
+    public void MusicaExplosao(){
+        efeito.MusicaExplosao();
     }
 
     // Declarando o Teclado adapter pra minha fase entender quando eu precionar as teclas

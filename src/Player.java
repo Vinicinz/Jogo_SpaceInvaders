@@ -17,6 +17,7 @@ public class Player {
     private int altura, largura;
     private List <Tiro> tiros;
     private boolean isVisivel;
+    private EfeitosSonoros som;
 
 
     // contrutor player e declaração que ele pode criar uma lista com a classe tiros
@@ -24,8 +25,8 @@ public class Player {
         this.x = 100;
         this.y = 100;
         isVisivel = true;
-
         tiros = new ArrayList<Tiro>();
+        som = new EfeitosSonoros();
     }
 
     // carregando minha imagem do jogador
@@ -51,6 +52,9 @@ public class Player {
     public Rectangle getBounds(){
         return new Rectangle(x,y,largura,altura);
     }
+    public void MusicaTiro(){
+        som.MusicaTiro();
+    }
 
     // Metodo para ler as entradas do teclado no programa
     public void keyPressed(KeyEvent tecla) {
@@ -58,6 +62,7 @@ public class Player {
 
         if (codigo == KeyEvent.VK_A) {
             tiroSimples();
+            MusicaTiro();
         }
         
         if (codigo == KeyEvent.VK_UP) {

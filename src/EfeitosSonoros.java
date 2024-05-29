@@ -70,4 +70,37 @@ public class EfeitosSonoros extends JPanel {
         }
     }
 
+    public void MusicaTiro(){
+        try {
+            File file = new File("res\\Musicas\\SomTiro.wav");
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(file);
+            clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+
+            FloatControl voluControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            voluControl.setValue(-20.0f);
+        } catch (Exception e) {
+            JOptionPane.showInputDialog(this, e);
+
+        } 
+    }
+
+    public void MusicaExplosao(){
+        try {
+            File file = new File("res\\Musicas\\SomExplosao.wav");
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(file);
+            clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+
+            FloatControl voluControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            voluControl.setValue(-10.0f);
+        } catch (Exception e) {
+            JOptionPane.showInputDialog(this, e);
+
+        } 
+    }
+    
+
 }
