@@ -30,10 +30,13 @@ public class Fase extends JPanel implements ActionListener {
     private Clip clip;
     private List<Enemy1> enemy1;
     private boolean emJogo;
+    private TelaInicial telaInicial;
+
 
     // Construtor Fase
-    public Fase() {
-
+    public Fase(TelaInicial telaInicial) {
+        this.telaInicial = telaInicial;
+        
         requestFocus();
         setFocusable(true);
         setDoubleBuffered(true);
@@ -107,11 +110,7 @@ public class Fase extends JPanel implements ActionListener {
                 m.load();
                 graficos.drawImage(m.getImagem(), m.getX(), m.getY(), this);
             }
-        } else {
-            ImageIcon fimJogo = new ImageIcon("res\\Painel\\fimdejogo.png");
-            graficos.drawImage(fimJogo.getImage(), 0, 0, null);
         }
-
         g.dispose();
     }
 
@@ -156,6 +155,7 @@ public class Fase extends JPanel implements ActionListener {
                 player.setVisivel(false);
                 tempEnemy1.setVisivel(false);
                 emJogo = false;
+                showGameOverScreen();
             }
         }
 
@@ -177,6 +177,11 @@ public class Fase extends JPanel implements ActionListener {
             }
 
         }
+    }
+    private void showGameOverScreen() {
+        timer.stop();
+        clip.stop(); 
+        telaInicial.showGameOverScreen();
     }
 
     // Declarando o Teclado adapter pra minha fase entender quando eu precionar as teclas

@@ -16,10 +16,12 @@ public class TelaInicial extends JPanel implements ActionListener{
 
         private Clip clip;
         private Image imagem1; 
+        private Container container;
 
 
     // metodo principal TelaInical qu eé chamado no Container 
-    public TelaInicial() {
+    public TelaInicial(Container container) {
+        this.container = container;
 
         setLayout(null);
         ImageIcon referencia = new ImageIcon("res\\Painel\\FundoInicial.gif");
@@ -53,11 +55,7 @@ public class TelaInicial extends JPanel implements ActionListener{
             @Override
             public void actionPerformed(ActionEvent e) {
                 clip.stop();
-                Fase fase = new Fase();
-                Container container = (Container) SwingUtilities.getWindowAncestor(TelaInicial.this);
-                container.setContentPane(fase);
-                container.revalidate();
-                fase.requestFocus();
+                startGame();
             }
         });
         // Criação do Botão Sair e Estilização
@@ -97,6 +95,28 @@ public class TelaInicial extends JPanel implements ActionListener{
         int yExit = (getHeight() / 2) + 10;
         exitButton.setLocation(x, yExit);
 
+    }
+
+    
+    // Método para iniciar o jogo (startGame)
+    private void startGame() {
+        Fase fase = new Fase(this);
+        container.setContentPane(fase);
+        container.revalidate();
+        fase.requestFocus();
+    }
+    public void showInitialScreen() {
+        clip.setFramePosition(0); // Reseta a música para o início
+        container.getContentPane().removeAll(); // Remove todos os componentes do contêiner
+        container.add(new TelaInicial(container)); // Adiciona uma nova instância de TelaInicial
+        container.revalidate(); // Atualiza o layout do contêiner
+    }
+       
+    public void showGameOverScreen() {
+        GameOverScreen gameOver = new GameOverScreen(this); // Passa uma referência para TelaInicial
+        container.setContentPane(gameOver);
+        container.revalidate();
+        gameOver.requestFocus();
     }
 
     // Metodo gerado autiomaticamente, n me pergunte oq ele faz kkkk
