@@ -25,13 +25,16 @@ public class TelaInicial extends JPanel implements ActionListener{
         MusicaTela();
 
         // Criação do Botão Start e Estilização
-        JButton startButton = new JButton("Start");
+        JButton startButton = new JButton("START");
 
-        startButton.setForeground(Color.BLACK);
-        startButton.setBackground(Color.decode("#ffffff"));
-        startButton.setFont(new Font("Infinix Display", Font.PLAIN, 35));
+        startButton.setForeground(Color.decode("#803D3B"));
+        startButton.setBackground(Color.decode("#E4C59E"));
+        startButton.setFont(new Font("alagard", Font.PLAIN, 35));
         startButton.setSize(200, 50);
         startButton.setFocusPainted(false);
+        startButton.setBorder(BorderFactory.createLineBorder(Color.decode("#000000"), 2)); // Borda azul escura com largura 2
+        startButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)); // Cursor em forma de mão
+
 
         // Adicionando a ação deste Botao, que vai chamar a classe Fase() e para a musica
         startButton.addActionListener(new ActionListener() {
@@ -43,11 +46,14 @@ public class TelaInicial extends JPanel implements ActionListener{
         });
         // Criação do Botão Sair e Estilização
 
-        JButton exitButton = new JButton("Sair");
-        exitButton.setForeground(Color.BLACK);
-        exitButton.setBackground(Color.decode("#ffffff"));
-        exitButton.setFont(new Font("Infinix Display", Font.PLAIN, 35));
+        JButton exitButton = new JButton("SAIR");
+        exitButton.setForeground(Color.decode("#803D3B"));
+        exitButton.setBackground(Color.decode("#E4C59E"));
+        exitButton.setFont(new Font("alagard", Font.PLAIN, 35));
         exitButton.setSize(200, 50);
+        exitButton.setBorder(BorderFactory.createLineBorder(Color.decode("#000000"), 2)); // Borda azul escura com largura 2
+        exitButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)); // Cursor em forma de mão
+
 
         // Adicionando a ação pra fechar o app
         exitButton.addActionListener((ActionEvent e) -> {
