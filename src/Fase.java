@@ -9,6 +9,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
 import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -21,6 +23,7 @@ public class Fase extends JPanel implements ActionListener {
     private Timer timer;
     private Clip clip;
     private List<Enemy1> enemy1;
+    private List<Estrela> estrela;
     private boolean emJogo;
     private TelaInicial telaInicial;
     private EfeitosSonoros musica;
@@ -50,6 +53,7 @@ public class Fase extends JPanel implements ActionListener {
         player.load();
 
         //iniciando o inimigo na fase e o timer pra fazer da update na fase
+        inicializaEstrela();
         inicializaInimigo();
         emJogo = true;
         timer = new Timer(5, this);
@@ -68,6 +72,19 @@ public class Fase extends JPanel implements ActionListener {
         }
     }
 
+    public void inicializaEstrela(){
+		int cordenadas[] = new int[300];
+		estrela = new ArrayList<Estrela>();
+		for (int i = 0; i < cordenadas.length; i++) {
+			Random a = new Random();
+			int x = a.nextInt(1024);
+			Random r = new Random();
+			int y = r.nextInt(768);
+			estrela.add(new Estrela(x, y));
+
+		}
+    }
+
     // Paint component para colocar os objetos na fase
     @Override
     public void paintComponent(Graphics g) {
@@ -77,6 +94,11 @@ public class Fase extends JPanel implements ActionListener {
             // definindo um fundo estatico
             graficos.drawImage(fundo1, 0, 0, null);
 
+            for (int k = 0; k < estrela.size(); k++) {
+				Estrela on = estrela.get(k);
+				on.load();
+                graficos.drawImage(on.getImagem(), on.getX(), on.getY(), null);
+            }
             // definindo que o player recebe posições de acordo com as mudanças na classe player
             graficos.drawImage(player.getImagem(), player.getX(), player.getY(), this);
 
@@ -118,6 +140,15 @@ public class Fase extends JPanel implements ActionListener {
                 in.update();
             } else {
                 enemy1.remove(o);
+            }
+        }
+
+        for (int p = 0; p < estrela.size(); p++) {
+            Estrela in = estrela.get(p);
+            if (in.isVisible()) {
+                in.update();
+            } else {
+                enemy1.remove(p);
             }
         }
 
