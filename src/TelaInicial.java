@@ -2,14 +2,7 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.sound.sampled.FloatControl;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 
 public class TelaInicial extends JPanel implements ActionListener{
@@ -17,9 +10,9 @@ public class TelaInicial extends JPanel implements ActionListener{
         private Clip clip;
         private Image imagem1; 
         private Container container;
+        private EfeitosSonoros musica;
 
-
-    // metodo principal TelaInical qu eé chamado no Container 
+    // metodo principal TelaInical que é chamado no Container 
     public TelaInicial(Container container) {
         this.container = container;
 
@@ -27,19 +20,9 @@ public class TelaInicial extends JPanel implements ActionListener{
         ImageIcon referencia = new ImageIcon("res\\Painel\\FundoInicial.gif");
         imagem1 = referencia.getImage();
 
-        //Upando a musica de batalha e definindo o valor fixo de volume
-        try {
-            File file = new File("res\\Musicas\\TitleTheme .wav");
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(file);
-            clip = AudioSystem.getClip();
-            clip.open(audioInputStream);
-            clip.start();
-
-            FloatControl voluControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            voluControl.setValue(-20.0f);
-
-        } catch (IOException | LineUnavailableException | UnsupportedAudioFileException e) {
-        }
+        //Upando a musica da tela inicial
+        musica = new EfeitosSonoros();
+        MusicaTela();
 
         // Criação do Botão Start e Estilização
         JButton startButton = new JButton("Start");
@@ -50,11 +33,11 @@ public class TelaInicial extends JPanel implements ActionListener{
         startButton.setSize(200, 50);
         startButton.setFocusPainted(false);
 
-        // Adicionando a ação deste Botao, que vai chamar a classe Fase() 
+        // Adicionando a ação deste Botao, que vai chamar a classe Fase() e para a musica
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                clip.stop();
+                PararMusica();
                 startGame();
             }
         });
@@ -77,7 +60,7 @@ public class TelaInicial extends JPanel implements ActionListener{
 
     }
 
-    // Metodo para centralizar os botões no meio da
+    // Metodo para centralizar os botões no meio da tela
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -97,7 +80,6 @@ public class TelaInicial extends JPanel implements ActionListener{
 
     }
 
-    
     // Método para iniciar o jogo (startGame)
     private void startGame() {
         Fase fase = new Fase(this);
@@ -105,13 +87,15 @@ public class TelaInicial extends JPanel implements ActionListener{
         container.revalidate();
         fase.requestFocus();
     }
+
+    // Metodo para ser chamado no gameover e começa novamente o jogo
     public void showInitialScreen() {
-        clip.setFramePosition(0); // Reseta a música para o início
-        container.getContentPane().removeAll(); // Remove todos os componentes do contêiner
-        container.add(new TelaInicial(container)); // Adiciona uma nova instância de TelaInicial
-        container.revalidate(); // Atualiza o layout do contêiner
+        container.getContentPane().removeAll(); 
+        container.add(new TelaInicial(container));
+        container.revalidate();
     }
-       
+
+    // Metodo que vou chmar quando morrer 
     public void showGameOverScreen() {
         GameOverScreen gameOver = new GameOverScreen(this); // Passa uma referência para TelaInicial
         container.setContentPane(gameOver);
@@ -119,10 +103,16 @@ public class TelaInicial extends JPanel implements ActionListener{
         gameOver.requestFocus();
     }
 
-    // Metodo gerado autiomaticamente, n me pergunte oq ele faz kkkk
-    @Override
+    // Musicas na tela inicial
+    public void MusicaTela() {
+		musica.MusicaTela();
+	}
+    public void PararMusica(){
+        musica.Parar();
+    }
+
+    // Metodo gerado autiomaticamente
     public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
 }

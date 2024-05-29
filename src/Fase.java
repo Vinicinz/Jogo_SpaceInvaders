@@ -7,17 +7,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.sound.sampled.FloatControl;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -31,6 +23,7 @@ public class Fase extends JPanel implements ActionListener {
     private List<Enemy1> enemy1;
     private boolean emJogo;
     private TelaInicial telaInicial;
+    private EfeitosSonoros musica;
 
 
     // Construtor Fase
@@ -40,34 +33,23 @@ public class Fase extends JPanel implements ActionListener {
         requestFocus();
         setFocusable(true);
         setDoubleBuffered(true);
+        addKeyListener(new TecladoAdapter());
 
         //Imagem de fundo preta
         ImageIcon referencia1 = new ImageIcon("res\\Painel\\Background.jpg");
         fundo1 = referencia1.getImage();
 
-        //Upando a musica de batalha e definindo o valor fixo de volume
-        try {
-            File file = new File("res\\Musicas\\PrepareForBattle.wav");
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(file);
-            clip = AudioSystem.getClip();
-            clip.open(audioInputStream);
-            clip.start();
+        //Upando a musica de batalha
+        musica = new EfeitosSonoros();
+        MusicaFase();
 
-            FloatControl voluControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            voluControl.setValue(-20.0f);
-
-        } catch (IOException | LineUnavailableException | UnsupportedAudioFileException e) {
-        }
-
-        //criando o player, iniciando o inimigo na fase e o timer pra fazer da update na fase
+        //criando o player
         player = new Player();
         player.load();
 
+        //iniciando o inimigo na fase e o timer pra fazer da update na fase
         inicializaInimigo();
-
-        addKeyListener(new TecladoAdapter());
         emJogo = true;
-
         timer = new Timer(5, this);
         timer.start();
     }
@@ -84,7 +66,7 @@ public class Fase extends JPanel implements ActionListener {
         }
     }
 
-    // Paint component é importante pra mostrar oq ta rolando e acontecendo na fase
+    // Paint component para colocar os objetos na fase
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -111,7 +93,6 @@ public class Fase extends JPanel implements ActionListener {
                 graficos.drawImage(m.getImagem(), m.getX(), m.getY(), this);
             }
         }
-        g.dispose();
     }
 
     // O Action permormed que atualiza oq esta acontecendo na fase
@@ -142,6 +123,7 @@ public class Fase extends JPanel implements ActionListener {
         repaint();
     }
 
+    // checando se há colisões entre os retangulos criados em volta da nossa imagem
     public void checarColisoes() {
         Rectangle formaNave = player.getBounds();
         Rectangle formaEnemy1;
@@ -180,8 +162,15 @@ public class Fase extends JPanel implements ActionListener {
     }
     private void showGameOverScreen() {
         timer.stop();
-        clip.stop(); 
+        PararMusica();
         telaInicial.showGameOverScreen();
+    }
+
+    public void MusicaFase() {
+		musica.MusicaFase();
+	}
+    public void PararMusica(){
+        musica.Parar();
     }
 
     // Declarando o Teclado adapter pra minha fase entender quando eu precionar as teclas
