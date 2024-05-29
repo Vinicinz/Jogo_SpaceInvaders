@@ -2,71 +2,58 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.sound.sampled.FloatControl;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 
 public class TelaInicial extends JPanel implements ActionListener{
 
         private Clip clip;
         private Image imagem1; 
+        private Container container;
+        private EfeitosSonoros musica;
 
-
-    // metodo principal TelaInical qu eé chamado no Container 
-    public TelaInicial() {
+    // metodo principal TelaInical que é chamado no Container 
+    public TelaInicial(Container container) {
+        this.container = container;
 
         setLayout(null);
         ImageIcon referencia = new ImageIcon("res\\Painel\\FundoInicial.gif");
         imagem1 = referencia.getImage();
 
-        //Upando a musica de batalha e definindo o valor fixo de volume
-        try {
-            File file = new File("res\\Musicas\\TitleTheme .wav");
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(file);
-            clip = AudioSystem.getClip();
-            clip.open(audioInputStream);
-            clip.start();
-
-            FloatControl voluControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            voluControl.setValue(-20.0f);
-
-        } catch (IOException | LineUnavailableException | UnsupportedAudioFileException e) {
-        }
+        //Upando a musica da tela inicial
+        musica = new EfeitosSonoros();
+        MusicaTela();
 
         // Criação do Botão Start e Estilização
-        JButton startButton = new JButton("Start");
+        JButton startButton = new JButton("START");
 
-        startButton.setForeground(Color.BLACK);
-        startButton.setBackground(Color.decode("#ffffff"));
-        startButton.setFont(new Font("Infinix Display", Font.PLAIN, 35));
+        startButton.setForeground(Color.decode("#803D3B"));
+        startButton.setBackground(Color.decode("#E4C59E"));
+        startButton.setFont(new Font("alagard", Font.PLAIN, 35));
         startButton.setSize(200, 50);
         startButton.setFocusPainted(false);
+        startButton.setBorder(BorderFactory.createLineBorder(Color.decode("#000000"), 2)); // Borda azul escura com largura 2
+        startButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)); // Cursor em forma de mão
 
-        // Adicionando a ação deste Botao, que vai chamar a classe Fase() 
+
+        // Adicionando a ação deste Botao, que vai chamar a classe Fase() e para a musica
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                clip.stop();
-                Fase fase = new Fase();
-                Container container = (Container) SwingUtilities.getWindowAncestor(TelaInicial.this);
-                container.setContentPane(fase);
-                container.revalidate();
-                fase.requestFocus();
+                PararMusica();
+                startGame();
             }
         });
         // Criação do Botão Sair e Estilização
 
-        JButton exitButton = new JButton("Sair");
-        exitButton.setForeground(Color.BLACK);
-        exitButton.setBackground(Color.decode("#ffffff"));
-        exitButton.setFont(new Font("Infinix Display", Font.PLAIN, 35));
+        JButton exitButton = new JButton("SAIR");
+        exitButton.setForeground(Color.decode("#803D3B"));
+        exitButton.setBackground(Color.decode("#E4C59E"));
+        exitButton.setFont(new Font("alagard", Font.PLAIN, 35));
         exitButton.setSize(200, 50);
+        exitButton.setBorder(BorderFactory.createLineBorder(Color.decode("#000000"), 2)); // Borda azul escura com largura 2
+        exitButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)); // Cursor em forma de mão
+
 
         // Adicionando a ação pra fechar o app
         exitButton.addActionListener((ActionEvent e) -> {
@@ -79,7 +66,7 @@ public class TelaInicial extends JPanel implements ActionListener{
 
     }
 
-    // Metodo para centralizar os botões no meio da
+    // Metodo para centralizar os botões no meio da tela
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -99,10 +86,39 @@ public class TelaInicial extends JPanel implements ActionListener{
 
     }
 
-    // Metodo gerado autiomaticamente, n me pergunte oq ele faz kkkk
-    @Override
+    // Método para iniciar o jogo (startGame)
+    private void startGame() {
+        Fase fase = new Fase(this);
+        container.setContentPane(fase);
+        container.revalidate();
+        fase.requestFocus();
+    }
+
+    // Metodo para ser chamado no gameover e começa novamente o jogo
+    public void showInitialScreen() {
+        container.getContentPane().removeAll(); 
+        container.add(new TelaInicial(container));
+        container.revalidate();
+    }
+
+    // Metodo que vou chmar quando morrer 
+    public void showGameOverScreen() {
+        GameOverScreen gameOver = new GameOverScreen(this); // Passa uma referência para TelaInicial
+        container.setContentPane(gameOver);
+        container.revalidate();
+        gameOver.requestFocus();
+    }
+
+    // Musicas na tela inicial
+    public void MusicaTela() {
+		musica.MusicaTela();
+	}
+    public void PararMusica(){
+        musica.Parar();
+    }
+
+    // Metodo gerado autiomaticamente
     public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
 }
