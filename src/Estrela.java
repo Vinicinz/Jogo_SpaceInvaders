@@ -1,7 +1,6 @@
 
 import java.awt.Image;
 import java.util.Random;
-
 import javax.swing.ImageIcon;
 
 public class Estrela {
