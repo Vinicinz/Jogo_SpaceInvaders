@@ -40,6 +40,20 @@ public class Player {
     public void update() {
         x += dx;
         y += dy;
+
+        if (x < 6){
+            x = 6; 
+        }
+        if (x > 938) {
+			x = 938;
+		}
+
+		if (y < 6) {
+			y = 6;
+		}
+		if (y > 694) {
+			y = 694;
+		}
     }
 
     // Criando metodo tiro simples pra ser chamado no teclado e criar um Tiro na Fase que começa do jogador
