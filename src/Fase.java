@@ -24,7 +24,6 @@ public class Fase extends JPanel implements ActionListener {
     private Clip clip;
     private List<Enemy1> enemy1;
     private List<Enemy2> enemy2;
-    private List<EnemyTiro> tiroInimigos;
     private List<Enemy3> enemy3;
     private List<Enemy4> enemy4;
     private List<Estrela> estrela;
