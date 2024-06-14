@@ -16,5 +16,7 @@ Java Development Kit (JDK) instalado na máquina.
 Instruções:
 
 Clone ou faça o download do repositório para sua máquina local.
-Abra o projeto em um ambiente de desenvolvimento Java (como Eclipse, IntelliJ IDEA, NetBeans).
+Abra o projeto em um ambiente de desenvolvimento Java.
 Compile e execute a classe Container para iniciar o jogo.
+
+Opcionalmente, você pode tentar executar o arquivo .jar, mas bugs e ocasionais erros são provaveis de acontecer.
