@@ -2,12 +2,9 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.sound.sampled.Clip;
 import javax.swing.*;
 
 public class TelaInicial extends JPanel implements ActionListener{
-
-        private Clip clip;
         private Image imagem1; 
         private Container container;
         private EfeitosSonoros musica;
@@ -102,14 +99,11 @@ public class TelaInicial extends JPanel implements ActionListener{
     }
 
     // Metodo que vou chmar quando morrer 
-    public void showGameOverScreen() {
-        GameOverScreen gameOver = new GameOverScreen(this); // Passa uma referência para TelaInicial
-        Score score = new Score(false);
-        
+    public void showGameOverScreen(int score) {
+        GameOverScreen gameOver = new GameOverScreen(this, score); // Passa uma referência para TelaInicial
         container.setContentPane(gameOver);
         container.revalidate();
         gameOver.requestFocus();
-        System.out.println("O jogo acabou");
     }
 
     // Musicas na tela inicial

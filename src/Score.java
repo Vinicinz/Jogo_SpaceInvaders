@@ -2,11 +2,11 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class Score implements Runnable {
+public class Score implements Runnable{
 
     private boolean jogo;
-    private int i = 0;
-    private String path = "score.txt";
+    public int pontuacao = 1;
+    private String path = "res\\score.txt";
 
     public Score(boolean jogo) {
         this.jogo = jogo;
@@ -16,12 +16,12 @@ public class Score implements Runnable {
     public void run() {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(path, true))) {
             while (jogo) {
-                i += 1;
-                Thread.sleep(1000);
-                System.out.println(i);
+                this.pontuacao += 1;
+                System.out.println(pontuacao);
+                Thread.sleep(500);
             }
-            System.out.println("Sua pontuação total foi de " + i);
-            bw.write("Sua pontuação foi de " + i);
+            System.out.println("Sua pontuação total foi de " + pontuacao);
+            bw.write("Sua pontuação foi de " + pontuacao);
             bw.newLine();
 
         } catch (InterruptedException e) {
@@ -33,6 +33,10 @@ public class Score implements Runnable {
 
     }
 
+    public void SomaPonto(){
+        pontuacao += 5;
+    }
+
     public boolean isEmJogo() {
         return jogo;
     }
@@ -41,4 +45,9 @@ public class Score implements Runnable {
         this.jogo = jogo;
     }
 
+    public int getPontuacao() {
+        return pontuacao;
+    }
+
+    
 }

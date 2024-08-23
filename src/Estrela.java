@@ -23,7 +23,7 @@ public class Estrela {
         imagem = referencia.getImage();
 
         this.largura = imagem.getWidth(null);
-        this.altura=imagem.getHeight(null);
+        this.altura = imagem.getHeight(null);
     }
 
     public void update(){
