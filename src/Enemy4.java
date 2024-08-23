@@ -1,6 +1,9 @@
 
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.ImageIcon;
 
 public class Enemy4 {
@@ -11,16 +14,40 @@ public class Enemy4 {
     private boolean isVisivel;
     private int LARGURA = 0;
     private int VELOCIDADE = -4;
+    private int vida;
+    private List<Explosao> explosoes;
 
     public Enemy4(int x, int y) {
         this.x = x;
         this.y = y;
         this.isVisivel = true;
+        vida = 1;
+        explosoes = new ArrayList<Explosao>();
+
     }
 
-    public void load(){
-        ImageIcon referencia = new ImageIcon("res\\Inimigo\\enemy4.png");
-        imagem = referencia.getImage();
+    public void explosoes() {
+        this.explosoes.add(new Explosao(x + largura, y + altura / 2));
+
+    }
+
+    public void load() {
+
+        if (vida == 1) {
+            ImageIcon referencia = new ImageIcon("res\\Inimigo\\enemy4.png");
+            imagem = referencia.getImage();
+
+        }
+
+        if (vida == 2) {
+            ImageIcon referencia = new ImageIcon("res\\Inimigo\\enemy4Hitmed.png");
+            imagem = referencia.getImage();
+        }
+
+        if (vida == 3) {
+            ImageIcon referencia = new ImageIcon("res\\Inimigo\\enemy4Hit.png");
+            imagem = referencia.getImage();
+        }
 
         this.largura = imagem.getWidth(null);
         this.altura = imagem.getHeight(null);
@@ -28,15 +55,14 @@ public class Enemy4 {
 
     public void update() {
         this.x += VELOCIDADE;
-        if (this.x < LARGURA){
+        if (this.x < LARGURA) {
             isVisivel = false;
         }
     }
-    
-    public Rectangle getBounds(){
-        return new Rectangle(x,y,largura,altura);
-    }
 
+    public Rectangle getBounds() {
+        return new Rectangle(x, y, largura, altura);
+    }
 
     public Image getImagem() {
         return imagem;
@@ -85,7 +111,13 @@ public class Enemy4 {
     public void setVELOCIDADE(int VELOCIDADE) {
         this.VELOCIDADE = VELOCIDADE;
     }
-    
-    
+
+    public int getVida() {
+        return vida;
+    }
+
+    public void setVida(int vida) {
+        this.vida = vida;
+    }
 
 }

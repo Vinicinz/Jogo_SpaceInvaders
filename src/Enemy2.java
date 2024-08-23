@@ -15,6 +15,8 @@ public class Enemy2 {
     private boolean isVisivel;
     private boolean tiro;
     private List<EnemyTiro> tiros;
+    private List<Explosao> explosoes;
+
 
     public Enemy2(int x, int y) {
         this.x = x;
@@ -23,6 +25,8 @@ public class Enemy2 {
 
         tiro = true;
         tiros = new ArrayList<EnemyTiro>();
+        explosoes = new ArrayList<Explosao>();
+
     }
 
     
@@ -50,6 +54,11 @@ public class Enemy2 {
 		this.tiros.add(new EnemyTiro(x + largura / 2, y + altura / 2));
 
 	}
+
+    public void explosoes() {
+        this.explosoes.add(new Explosao(x + largura, y + altura / 2));
+
+    }
 
     public List<EnemyTiro> getTiroInimigo() {
 		return tiros;

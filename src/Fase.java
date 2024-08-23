@@ -27,6 +27,8 @@ public class Fase extends JPanel implements ActionListener {
     private List<Enemy3> enemy3;
     private List<Enemy4> enemy4;
     private List<Estrela> estrela;
+    private List<Explosao> explosoes;
+
     private boolean emJogo;
     private TelaInicial telaInicial;
     private EfeitosSonoros musica;
@@ -60,6 +62,10 @@ public class Fase extends JPanel implements ActionListener {
         // iniciando o inimigo na fase e o timer pra fazer da update na fase
         inicializaEstrela();
         inicializaInimigo();
+        inicializaExplosoes();
+
+
+        waitForSeconds();
         emJogo = true;
         timer = new Timer(5, this);
         timer.start();
@@ -68,7 +74,12 @@ public class Fase extends JPanel implements ActionListener {
         score = new Score(emJogo);
         thread = new Thread(score);
         thread.start();
-    
+
+    }
+
+    public void inicializaExplosoes() {
+        explosoes = new ArrayList<Explosao>();
+
     }
 
     // metodo que define previamente a posição de todos os inimigos no inicio da
@@ -134,7 +145,7 @@ public class Fase extends JPanel implements ActionListener {
 
             g.setColor(Color.white);
             g.setFont(new Font("Ink Free", Font.BOLD, 40));
-            g.drawString("Score: " + score.getPontuacao() , (getWidth()/2 - 60) , g.getFont().getSize());
+            g.drawString("Score: " + score.getPontuacao(), (getWidth() / 2 - 60), g.getFont().getSize());
 
             for (int k = 0; k < estrela.size(); k++) {
                 Estrela on = estrela.get(k);
@@ -184,6 +195,12 @@ public class Fase extends JPanel implements ActionListener {
                     graficos.drawImage(m.getImage(), m.getX(), m.getY(), this);
                 }
             }
+
+            for (int h = 0; h < explosoes.size(); h++) {
+                Explosao ln = explosoes.get(h);
+                ln.load();
+                graficos.drawImage(ln.getImagem(), ln.getX(), ln.getY(), this);
+            }
         }
     }
 
@@ -207,7 +224,11 @@ public class Fase extends JPanel implements ActionListener {
             if (in.isVisivel()) {
                 in.update();
             } else {
+                int enemyX, enemyY;
+                enemyX = enemy1.get(o).getX();
+                enemyY = enemy1.get(o).getY();
                 enemy1.remove(o);
+                explosoes.add(new Explosao(enemyX, enemyY));
             }
         }
 
@@ -216,7 +237,11 @@ public class Fase extends JPanel implements ActionListener {
             if (in.isVisivel()) {
                 in.update();
             } else {
+                int enemyX, enemyY;
+                enemyX = enemy2.get(q).getX();
+                enemyY = enemy2.get(q).getY();
                 enemy2.remove(q);
+                explosoes.add(new Explosao(enemyX, enemyY));
             }
         }
         for (int v = 0; v < enemy3.size(); v++) {
@@ -224,15 +249,23 @@ public class Fase extends JPanel implements ActionListener {
             if (in.isVisivel()) {
                 in.update();
             } else {
+                int enemyX, enemyY;
+                enemyX = enemy3.get(v).getX();
+                enemyY = enemy3.get(v).getY();
                 enemy3.remove(v);
-            }
+                explosoes.add(new Explosao(enemyX, enemyY));            }
         }
         for (int w = 0; w < enemy4.size(); w++) {
             Enemy4 in = enemy4.get(w);
             if (in.isVisivel()) {
                 in.update();
             } else {
+                int enemyX, enemyY;
+                enemyX = enemy4.get(w).getX();
+                enemyY = enemy4.get(w).getY();
                 enemy4.remove(w);
+                explosoes.add(new Explosao(enemyX, enemyY));
+
             }
 
         }
@@ -259,8 +292,32 @@ public class Fase extends JPanel implements ActionListener {
             }
         }
 
+        for (int q = 0; q < explosoes.size(); q++) {
+            Explosao y = explosoes.get(q);
+            if (y.isVisivel()) {
+                y.update();
+            } else {
+                explosoes.remove(q);
+            }
+
+        }
+
         checarColisoes();
         repaint();
+    }
+
+    public void waitForSeconds() {
+        Timer timer2;
+
+        timer2 = new Timer(2000, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                for (int i = 0; i < explosoes.size(); i++) {
+                    explosoes.get(i).setVisivel(false);
+                }
+
+            }
+        });
+        timer2.start();
     }
 
     // checando se há colisões entre os retangulos criados em volta da nossa imagem
@@ -374,12 +431,21 @@ public class Fase extends JPanel implements ActionListener {
             for (int v = 0; v < enemy3.size(); v++) {
                 Enemy3 tempEnemy3 = enemy3.get(v);
                 formaEnemy3 = tempEnemy3.getBounds();
+                int vida3 = tempEnemy3.getVida();
 
                 if (formaTiro.intersects(formaEnemy3)) {
-                    tempEnemy3.setVisivel(false);
-                    tempTiro.setVisivel(false);
-                    MusicaExplosao();
-                    SomaPontuacao();
+
+                    if (vida3 < 5) {
+                        tempTiro.setVisivel(false);
+                        tempEnemy3.setVida(vida3 + 1);
+
+                    }
+                    if (vida3 == 4) {
+                        tempEnemy3.setVisivel(false);
+                        tempTiro.setVisivel(false);
+                        MusicaExplosao();
+                        SomaPontuacao();
+                    }
                 }
 
             }
@@ -387,12 +453,22 @@ public class Fase extends JPanel implements ActionListener {
             for (int w = 0; w < enemy4.size(); w++) {
                 Enemy4 tempEnemy4 = enemy4.get(w);
                 formaEnemy4 = tempEnemy4.getBounds();
+                int vida4 = tempEnemy4.getVida();
 
                 if (formaTiro.intersects(formaEnemy4)) {
-                    tempEnemy4.setVisivel(false);
-                    tempTiro.setVisivel(false);
-                    MusicaExplosao();
-                    SomaPontuacao();
+
+                    if (vida4 < 5) {
+                        tempTiro.setVisivel(false);
+                        tempEnemy4.setVida(vida4 + 1);
+
+                    }
+                    if (vida4 == 4) {
+                        tempEnemy4.setVisivel(false);
+                        tempTiro.setVisivel(false);
+                        MusicaExplosao();
+                        SomaPontuacao();
+                    }
+
                 }
 
             }
@@ -407,6 +483,7 @@ public class Fase extends JPanel implements ActionListener {
         score.setEmJogo(emJogo);
 
     }
+
     public void MusicaFase() {
         musica.MusicaFase();
     }
@@ -414,7 +491,8 @@ public class Fase extends JPanel implements ActionListener {
     public void MusicaExplosao() {
         efeito.MusicaExplosao();
     }
-    public void SomaPontuacao(){
+
+    public void SomaPontuacao() {
         score.SomaPonto();
     }
 

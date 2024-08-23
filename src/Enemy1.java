@@ -1,6 +1,9 @@
 
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.ImageIcon;
 
 // Classe Inimigo que eu chamo na fase
@@ -12,37 +15,45 @@ public class Enemy1 {
     private boolean isVisivel;
     private static final int LARGURA = 0;
     private static int VELOCIDADE = -2;
-
+    private List<Explosao> explosoes;
 
     // Construtor do inimigo1 que recebe as cordenadas
-    public Enemy1 (int x, int y) {
+    public Enemy1(int x, int y) {
         this.x = x;
         this.y = y;
         isVisivel = true;
+        explosoes = new ArrayList<Explosao>();
+
     }
 
-    //Carregando a imagem do inimigo
-    public void load(){
-    ImageIcon referencia = new ImageIcon("res\\Inimigo\\enemy1.png");
-    imagem = referencia.getImage();
+    public void explosoes() {
+        this.explosoes.add(new Explosao(x + largura, y + altura / 2));
 
-    this.largura = imagem.getWidth(null);
-    this.altura = imagem.getHeight(null);
     }
 
-    // Toda vez que é atualizado o inimigo recebe a velociadade negativa e retrocede na fase
-    public void update(){
+    // Carregando a imagem do inimigo
+    public void load() {
+        ImageIcon referencia = new ImageIcon("res\\Inimigo\\enemy1.png");
+        imagem = referencia.getImage();
+
+        this.largura = imagem.getWidth(null);
+        this.altura = imagem.getHeight(null);
+    }
+
+    // Toda vez que é atualizado o inimigo recebe a velociadade negativa e retrocede
+    // na fase
+    public void update() {
         this.x += VELOCIDADE;
-        if (this.x < LARGURA){
+        if (this.x < LARGURA) {
             isVisivel = false;
         }
     }
-    
-    public Rectangle getBounds(){
-        return new Rectangle(x,y,largura,altura);
+
+    public Rectangle getBounds() {
+        return new Rectangle(x, y, largura, altura);
     }
 
-    // getters e Setters da classe 
+    // getters e Setters da classe
     public int getX() {
         return x;
     }
