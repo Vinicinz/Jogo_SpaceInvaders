@@ -104,9 +104,12 @@ public class TelaInicial extends JPanel implements ActionListener{
     // Metodo que vou chmar quando morrer 
     public void showGameOverScreen() {
         GameOverScreen gameOver = new GameOverScreen(this); // Passa uma referência para TelaInicial
+        Score score = new Score(false);
+        
         container.setContentPane(gameOver);
         container.revalidate();
         gameOver.requestFocus();
+        System.out.println("O jogo acabou");
     }
 
     // Musicas na tela inicial

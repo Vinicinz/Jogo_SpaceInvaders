@@ -7,9 +7,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Scanner;
+import java.io.BufferedWriter;
 
 import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
@@ -31,6 +36,8 @@ public class Fase extends JPanel implements ActionListener {
     private TelaInicial telaInicial;
     private EfeitosSonoros musica;
     private EfeitosSonoros efeito;
+    private Thread thread;
+    private Score score;
 
     // Construtor Fase
     public Fase(TelaInicial telaInicial) {
@@ -41,28 +48,35 @@ public class Fase extends JPanel implements ActionListener {
         setDoubleBuffered(true);
         addKeyListener(new TecladoAdapter());
 
-        //Imagem de fundo preta
+        // Imagem de fundo preta
         ImageIcon referencia1 = new ImageIcon("res\\Painel\\Background.jpg");
         fundo1 = referencia1.getImage();
 
-        //Upando a musica de batalha
+        // Upando a musica de batalha
         musica = new EfeitosSonoros();
         efeito = new EfeitosSonoros();
         MusicaFase();
 
-        //criando o player
+        // criando o player
         player = new Player();
         player.load();
 
-        //iniciando o inimigo na fase e o timer pra fazer da update na fase
+        // iniciando o inimigo na fase e o timer pra fazer da update na fase
         inicializaEstrela();
         inicializaInimigo();
         emJogo = true;
         timer = new Timer(5, this);
         timer.start();
+
+        System.out.println("Score Iniciado");
+        score = new Score(emJogo);
+        thread = new Thread(score);
+        thread.start();
+    
     }
 
-    // metodo que define previamente a posição de todos os inimigos no inicio da fase, ela cria uma lista de 40 inimigos e posiciona eles fora da fase
+    // metodo que define previamente a posição de todos os inimigos no inicio da
+    // fase, ela cria uma lista de 40 inimigos e posiciona eles fora da fase
     public void inicializaInimigo() {
         int cordenadas1[] = new int[40];
         enemy1 = new ArrayList<Enemy1>();
@@ -127,7 +141,8 @@ public class Fase extends JPanel implements ActionListener {
                 on.load();
                 graficos.drawImage(on.getImagem(), on.getX(), on.getY(), null);
             }
-            // definindo que o player recebe posições de acordo com as mudanças na classe player
+            // definindo que o player recebe posições de acordo com as mudanças na classe
+            // player
             graficos.drawImage(player.getImagem(), player.getX(), player.getY(), this);
 
             // laço para atualiza a movimentação do inimigo
@@ -153,7 +168,7 @@ public class Fase extends JPanel implements ActionListener {
 
             }
 
-            //laço para atualizar a movimentação do tiro
+            // laço para atualizar a movimentação do tiro
             List<Tiro> tiros = player.getTiros();
             for (int i = 0; i < tiros.size(); i++) {
                 Tiro m = tiros.get(i);
@@ -311,17 +326,17 @@ public class Fase extends JPanel implements ActionListener {
             List<EnemyTiro> tiros = enemy2.get(z).getTiroInimigo();
 
             for (int y = 0; y < tiros.size(); y++) {
-                    EnemyTiro tempEnemyTiro = tiros.get(y);
-                    formaTiroInimigo = tempEnemyTiro.getBounds();
+                EnemyTiro tempEnemyTiro = tiros.get(y);
+                formaTiroInimigo = tempEnemyTiro.getBounds();
 
-                    if (formaNave.intersects(formaTiroInimigo)) {
-                        player.setVisivel(false);
-                        tempEnemyTiro.setVisivel(false);
-                        emJogo = false;
-                        showGameOverScreen();
-                    }
+                if (formaNave.intersects(formaTiroInimigo)) {
+                    player.setVisivel(false);
+                    tempEnemyTiro.setVisivel(false);
+                    emJogo = false;
+                    showGameOverScreen();
                 }
-            
+            }
+
         }
 
         List<Tiro> tiros = player.getTiros();
@@ -385,6 +400,8 @@ public class Fase extends JPanel implements ActionListener {
         timer.stop();
         PararMusica();
         telaInicial.showGameOverScreen();
+        Score score = new Score(emJogo);
+        score.setEmJogo(false);
     }
 
     public void MusicaFase() {
@@ -399,7 +416,8 @@ public class Fase extends JPanel implements ActionListener {
         efeito.MusicaExplosao();
     }
 
-    // Declarando o Teclado adapter pra minha fase entender quando eu precionar as teclas
+    // Declarando o Teclado adapter pra minha fase entender quando eu precionar as
+    // teclas
     private class TecladoAdapter extends KeyAdapter {
 
         @Override

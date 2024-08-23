@@ -12,7 +12,6 @@ public class Container extends JFrame {
 
         TelaInicial telaInicial = new TelaInicial(this);
         setContentPane(telaInicial);
-
         setVisible(true);
     }
 
