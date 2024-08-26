@@ -64,7 +64,6 @@ public class Fase extends JPanel implements ActionListener {
         inicializaInimigo();
         inicializaExplosoes();
 
-
         waitForSeconds();
         emJogo = true;
         timer = new Timer(5, this);
@@ -201,6 +200,17 @@ public class Fase extends JPanel implements ActionListener {
                 ln.load();
                 graficos.drawImage(ln.getImagem(), ln.getX(), ln.getY(), this);
             }
+
+            ImageIcon tamplate1 = new ImageIcon("res\\Painel\\tamplateIco.png");
+            graficos.drawImage(tamplate1.getImage(), 5, 10, null);
+
+            int a = 5;
+            for (int j = 0; j < player.getVida(); j++) {
+                ImageIcon vida = new ImageIcon("res\\Painel\\Vida.png");
+                graficos.drawImage(vida.getImage(), a, 20, null);
+                a += 30;
+            }
+
         }
     }
 
@@ -253,7 +263,8 @@ public class Fase extends JPanel implements ActionListener {
                 enemyX = enemy3.get(v).getX();
                 enemyY = enemy3.get(v).getY();
                 enemy3.remove(v);
-                explosoes.add(new Explosao(enemyX, enemyY));            }
+                explosoes.add(new Explosao(enemyX, enemyY));
+            }
         }
         for (int w = 0; w < enemy4.size(); w++) {
             Enemy4 in = enemy4.get(w);
@@ -335,10 +346,16 @@ public class Fase extends JPanel implements ActionListener {
             formaEnemy1 = tempEnemy1.getBounds();
 
             if (formaNave.intersects(formaEnemy1)) {
-                player.setVisivel(false);
+                player.setVida(player.getVida() - 1);
                 tempEnemy1.setVisivel(false);
-                emJogo = false;
-                showGameOverScreen();
+                MusicaExplosao();
+                if (player.getVida() < 0) {
+                    player.setVisivel(false);
+                    tempEnemy1.setVisivel(false);
+                    emJogo = false;
+                    showGameOverScreen();
+                }
+
             }
         }
 
@@ -347,10 +364,16 @@ public class Fase extends JPanel implements ActionListener {
             formaEnemy2 = tempEnemy2.getBounds();
 
             if (formaNave.intersects(formaEnemy2)) {
-                player.setVisivel(false);
+                player.setVida(player.getVida() - 1);
                 tempEnemy2.setVisivel(false);
-                emJogo = false;
-                showGameOverScreen();
+                MusicaExplosao();
+                if (player.getVida() < 0) {
+                    player.setVisivel(false);
+                    tempEnemy2.setVisivel(false);
+                    emJogo = false;
+                    showGameOverScreen();
+
+                }
             }
         }
 
@@ -359,10 +382,16 @@ public class Fase extends JPanel implements ActionListener {
             formaEnemy3 = tempEnemy3.getBounds();
 
             if (formaNave.intersects(formaEnemy3)) {
-                player.setVisivel(false);
+                player.setVida(player.getVida() - 1);
                 tempEnemy3.setVisivel(false);
-                emJogo = false;
-                showGameOverScreen();
+                MusicaExplosao();
+
+                if (player.getVida() < 0) {
+                    player.setVisivel(false);
+                    tempEnemy3.setVisivel(false);
+                    emJogo = false;
+                    showGameOverScreen();
+                }
             }
         }
 
@@ -371,12 +400,16 @@ public class Fase extends JPanel implements ActionListener {
             formaEnemy4 = tempEnemy4.getBounds();
 
             if (formaNave.intersects(formaEnemy4)) {
-                player.setVisivel(false);
+                player.setVida(player.getVida() - 1);
                 tempEnemy4.setVisivel(false);
-                emJogo = false;
-                showGameOverScreen();
+                MusicaExplosao();
+                if (player.getVida() < 0) {
+                    player.setVisivel(false);
+                    tempEnemy4.setVisivel(false);
+                    emJogo = false;
+                    showGameOverScreen();
+                }
             }
-
         }
 
         for (int z = 0; z < enemy2.size(); z++) {
@@ -387,10 +420,15 @@ public class Fase extends JPanel implements ActionListener {
                 formaTiroInimigo = tempEnemyTiro.getBounds();
 
                 if (formaNave.intersects(formaTiroInimigo)) {
-                    player.setVisivel(false);
+                    player.setVida(player.getVida() - 1);
                     tempEnemyTiro.setVisivel(false);
-                    emJogo = false;
-                    showGameOverScreen();
+                    MusicaExplosao();
+                    if (player.getVida() < 0) {
+                        player.setVisivel(false);
+                        tempEnemyTiro.setVisivel(false);
+                        emJogo = false;
+                        showGameOverScreen();
+                    }
                 }
             }
 

@@ -17,6 +17,7 @@ public class Player {
     private List <Tiro> tiros;
     private boolean isVisivel;
     private EfeitosSonoros som;
+    private int vida;
 
 
     // contrutor player e declaração que ele pode criar uma lista com a classe tiros
@@ -26,6 +27,7 @@ public class Player {
         isVisivel = true;
         tiros = new ArrayList<Tiro>();
         som = new EfeitosSonoros();
+        vida = 6;
     }
 
     // carregando minha imagem do jogador
@@ -142,6 +144,14 @@ public class Player {
 
     public void setVisivel(boolean isVisivel) {
         this.isVisivel = isVisivel;
+    }
+
+    public int getVida() {
+        return vida;
+    }
+
+    public void setVida(int vida) {
+        this.vida = vida;
     }
     
 }
